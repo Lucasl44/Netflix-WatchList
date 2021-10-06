@@ -39,10 +39,12 @@ const del = (id) => {
     const d = data.find((d) => d.id == id);
     const matchData = (d) => d.id !== id;
     saveData(data.filter(matchData)); 
-    console.log("Deleted:")
-    console.log(d)
     return d;
 };
 
-module.exports = {add, list, del};
+const update = () => {
+
+}
+
+module.exports = {add, list, del, update};
 // currently adds input data to a text file saved on desktop, with an id, type (movie or show), and the title, still need to update them.
