@@ -2,7 +2,7 @@ require("dotenv").config();
 const yargs = require("yargs/yargs");
 const { hideBin } = require("yargs/helpers");
 const argv = yargs(hideBin(process.argv)).argv;
-const { add, list, del, update } = require("./src/app.js")
+const { add, list, del, update, watched } = require("./src/app.js")
 
 const main = () => {
     if (argv.add) {
@@ -12,7 +12,9 @@ const main = () => {
     } else if (argv.delete) {
         del(argv.id);
     } else if (argv.update) {
-        update()
+        update(argv.id, argv.type, argv.title);
+    } else if (argv.watched) {
+        watched(argv.id);
     }
 };
 main();

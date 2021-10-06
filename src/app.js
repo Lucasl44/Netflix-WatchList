@@ -26,8 +26,8 @@ const makeID = () => {
     return customAlphabet(process.env.CHARACTERS, parseInt(process.env.LENGTH))();
 };
 
-const add = (type, title, id = false) => {
-    saveData([...loadData(), {id: id || makeID(), type: type, title: title}]);
+const add = (type, title, id = false, watched = false) => {
+    saveData([...loadData(), {id: id || makeID(), type: type, title: title, watched}]);
 };
 
 const list = () => {
@@ -42,9 +42,17 @@ const del = (id) => {
     return d;
 };
 
-const update = () => {
-
+const update = (id, type, title) => {
+    const data = del(id);
+    add(type || data.type, title || data.title, id);
 }
 
-module.exports = {add, list, del, update};
-// currently adds input data to a text file saved on desktop, with an id, type (movie or show), and the title, still need to update them.
+const watched = (id) => {
+    const data = loadData();
+    const d = data.find((element) => element.id === id);
+    // wprk on turning watched to true
+       
+}
+
+module.exports = {add, list, del, update, watched};
+
