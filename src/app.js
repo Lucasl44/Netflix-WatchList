@@ -47,12 +47,8 @@ const update = (id, type, title) => {
     add(type || data.type, title || data.title, id);
 }
 
-const watched = (id) => {
-    const data = loadData();
-    const d = data.find((element) => element.id === id);
-    // wprk on turning watched to true
-       
-}
 
-module.exports = {add, list, del, update, watched};
+    
+
+module.exports = {add, list, del, update};
 
