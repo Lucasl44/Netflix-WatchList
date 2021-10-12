@@ -13,7 +13,7 @@ const Director = connection.define("Director", {
 });
 
 const Movies = connection.define("Movies", {
-    name: {
+    title: {
         type: DataTypes.STRING,
         allowNull: false
     },
@@ -22,10 +22,12 @@ const Movies = connection.define("Movies", {
         allowNull: false
     }, 
     runtime: {
-        type: DataTypes.FLOAT,
+        type: DataTypes.STRING,
         allowNull: true
     }
-}, { });
+}, { 
+    indexes: [{unique: true, fields: ["title", "DirectorID" ]}]
+});
 
 const Shows = connection.define("Shows", {
     title: {
@@ -40,7 +42,9 @@ const Shows = connection.define("Shows", {
         type: DataTypes.INTEGER,
         allowNull: true
     }
-}, { });
+}, { 
+    indexes: [{unique: true, fields: ["title", "DirectorID" ]}]
+});
 Movies.belongsTo(Director, {onDelete: "cascade"});
 Shows.belongsTo(Director, {onDelete: "cascade"});
 

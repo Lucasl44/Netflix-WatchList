@@ -2,14 +2,35 @@ const { Director, Movies, Shows } = require("../models");
 
 const add = async(argv) => {
     if (argv.add === "show") {
-        await Director.create({name: argv.director});
         let pk = await Director.findOne({where: {name: argv.director }});
+        if (pk === null) {
+            await Director.create({name: argv.director});
+            pk = await Director.findOne({where: {name: argv.director }});
+        };
         await Shows.create({title: argv.title, genre: argv.genre, seasons: argv.seasons, DirectorId: pk.id});
+    } else if (argv.add === "movie") {
+        let pk = await Director.findOne({where: {name: argv.director }});
+        if (pk === null) {
+            await Director.create({name: argv.director});
+            pk = await Director.findOne({where: {name: argv.director }});
+        };
+        await Movies.create({title: argv.title, genre: argv.genre, runtime: argv.runtime, DirectorId: pk.id});
     }
 }
 
+const list = async ({list}) => {
+    let results = [];
+    if (list === "directors") {
+        results = await Director.findAll({attributes: ["id", "name"]});
+    } else if (list === "movies") {
+        results = await Movies.findAll({attributes: ["id", "title", "genre", "runtime", "DirectorID"]});
+    } else if (list === "shows") {
+        results = await Shows.findAll({attributes: ["id", "title", "genre", "seasons", "DirectorID"]});
+    }
+    console.table(results.map(result => result.dataValues))
+}
 
-
+module.exports = {update, add, remove, list};
 
 const update = async (id, title, type, genre) => {
     const entry = Entry.findAll({where: {id}});
@@ -22,27 +43,9 @@ const update = async (id, title, type, genre) => {
     });
 };
 
-// const add = async (title, type, genre) => {
-//     await Entry.create({
-//         title,
-//         type,
-//         genre
-//     });
-// };
 
 const remove = async (id) => await Entry.destroy({where: { id } });
-
-const list = async () => {
-    console.log("\n");
-        for (entry of await Entry.findAll()) {
-            console.log(`ID:\t${entry.id}`);
-            console.log(`Title:\t${entry.title}`); 
-            console.log(`Type:\t${entry.type}`);
-            console.log(`Genre:\t${entry.genre}`);
-            console.log("\n");
-        }
-}
     
 
-module.exports = {update, add, remove, list};
+
 
