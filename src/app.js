@@ -1,4 +1,15 @@
-const { Entry } = require("../models");
+const { Director, Movies, Shows } = require("../models");
+
+const add = async(argv) => {
+    if (argv.add === "show") {
+        await Director.create({name: argv.director});
+        let pk = await Director.findOne({where: {name: argv.director }});
+        await Shows.create({title: argv.title, genre: argv.genre, seasons: argv.seasons, DirectorId: pk.id});
+    }
+}
+
+
+
 
 const update = async (id, title, type, genre) => {
     const entry = Entry.findAll({where: {id}});
@@ -11,13 +22,13 @@ const update = async (id, title, type, genre) => {
     });
 };
 
-const add = async (title, type, genre) => {
-    await Entry.create({
-        title,
-        type,
-        genre
-    });
-};
+// const add = async (title, type, genre) => {
+//     await Entry.create({
+//         title,
+//         type,
+//         genre
+//     });
+// };
 
 const remove = async (id) => await Entry.destroy({where: { id } });
 

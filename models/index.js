@@ -28,7 +28,7 @@ const Movies = connection.define("Movies", {
 }, { });
 
 const Shows = connection.define("Shows", {
-    name: {
+    title: {
         type: DataTypes.STRING,
         allowNull: false
     },

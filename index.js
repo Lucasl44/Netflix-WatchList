@@ -2,9 +2,10 @@ require("dotenv").config();
 const yargs = require("yargs/yargs");
 const { hideBin } = require("yargs/helpers");
 const { connection } = require("./connection");
-const { Director, Shows, Movies } = require("./models")
+const { Director, Shows, Movies } = require("./models");
+const { update, add, remove, list } = require("./src/app.js");
+
 const argv = yargs(hideBin(process.argv)).argv;
-const { update, add, remove, list } = require("./src/app.js")
 
 const main = async () => {
     try {
@@ -24,7 +25,7 @@ const main = async () => {
         } else if (argv.update && argv.id) {
             await update(argv);
         }
-        
+
         await connection.close();
 
     }catch(error) {
