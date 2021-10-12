@@ -15,6 +15,8 @@ const add = async(argv) => {
             pk = await Director.findOne({where: {name: argv.director }});
         };
         await Movies.create({title: argv.title, genre: argv.genre, runtime: argv.runtime, DirectorId: pk.id});
+    } else if (argv.add === "director") {
+        await Director.create({name: argv.name})
     }
 }
 
@@ -30,22 +32,40 @@ const list = async ({list}) => {
     console.table(results.map(result => result.dataValues))
 }
 
+const remove = async ({remove, id}) => {
+    if (remove === "director") {
+        await Director.destroy({where: {id}});
+    } else if (remove === "movie") {
+        await Movies.destroy({where: {id}});
+    }  else if (remove === "show") {
+        await Shows.destroy({where: {id}});
+    } 
+}
+const update = async ({update, id, name, title, genre, runtime}) => {
+    if (update === "director") {
+        const dir = await Director.findByPk(id);
+        await Director.update({name: name || dir.name}, {where: {id}});
+    } else if (update === "movie") {
+        const aMovie = await Movies.findByPk(id);
+        await Movies.update({title: title || aMovie.title, genre: genre || aMovie.genre, runtime: rumetime || aMovie.runtime, id: id || aMovie.DirectorID}, {where: {id}});
+    }
+}
 module.exports = {update, add, remove, list};
 
-const update = async (id, title, type, genre) => {
-    const entry = Entry.findAll({where: {id}});
-    await Entry.update({
-        title: title || entry.title,
-        type: type || entry.type,
-        genre: genre || entry.genre,
-    }, {
-        where: {id}
-    });
-};
 
 
-const remove = async (id) => await Entry.destroy({where: { id } });
-    
+// const remove = async (id) => await Entry.destroy({where: { id } });
+
+// const update = async (id, title, type, genre) => {
+//     const entry = Entry.findAll({where: {id}});
+//     await Entry.update({
+//         title: title || entry.title,
+//         type: type || entry.type,
+//         genre: genre || entry.genre,
+//     }, {
+//         where: {id}
+//     });
+// };
 
 
 
