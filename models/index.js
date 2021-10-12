@@ -1,22 +1,47 @@
 const { DataTypes } = require("sequelize");
 const { connection } = require("../connection");
 
-const Entry = connection.define("Netflix", {
-    title: {
+// new model created
+
+const Director = connection.define("Director", {
+    name: {
         type: DataTypes.STRING,
         allowNull: false
-    },
-    type: {
+    }
+}, {
+    indexes: [{unique: true, fields: ["name"]}]
+});
+
+const Movies = connection.define("Movies", {
+    name: {
         type: DataTypes.STRING,
         allowNull: false
     },
     genre: {
         type: DataTypes.STRING,
         allowNull: false
+    }, 
+    runtime: {
+        type: DataTypes.FLOAT,
+        allowNull: true
     }
-}, {
-         indexes: [{unique: true, fields: ["title"]}]
-    
-});
+}, { });
 
-module.exports = { Entry };
+const Shows = connection.define("Shows", {
+    name: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    genre: {
+        type: DataTypes.STRING,
+        allowNull: false
+    }, 
+    seasons: {
+        type: DataTypes.INTEGER,
+        allowNull: true
+    }
+}, { });
+Movies.belongsTo(Director, {onDelete: "cascade"});
+Shows.belongsTo(Director, {onDelete: "cascade"});
+
+module.exports = { Director, Movies, Shows };
