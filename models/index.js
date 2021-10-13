@@ -47,5 +47,4 @@ const Shows = connection.define("Shows", {
 });
 Movies.belongsTo(Director, {onDelete: "cascade"});
 Shows.belongsTo(Director, {onDelete: "cascade"});
-
 module.exports = { Director, Movies, Shows };

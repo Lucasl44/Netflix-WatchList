@@ -20,7 +20,7 @@ const main = async () => {
             await add(argv);
         } else if (argv.list) {
             await list(argv)
-        } else if (argv.remove && argv.id) {
+        } else if (argv.remove) {
             await remove(argv);
         } else if (argv.update && argv.id) {
             await update(argv);
