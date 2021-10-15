@@ -45,6 +45,23 @@ const Shows = connection.define("Shows", {
 }, { 
     indexes: [{unique: true, fields: ["title", "DirectorID" ]}]
 });
+
+const Genres = connection.define("Genres", {
+    genre: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    count: {
+        type: DataTypes.INTEGER,
+        allowNull: true
+    }
+}, {
+    indexes: [{unique: true, fields: ["genre"]}]
+});
+
 Movies.belongsTo(Director, {onDelete: "cascade"});
 Shows.belongsTo(Director, {onDelete: "cascade"});
-module.exports = { Director, Movies, Shows };
+// Movies.belongsTo(Genres); 
+// Shows.belongsTo(Genres); 
+
+module.exports = { Director, Movies, Shows, Genres };

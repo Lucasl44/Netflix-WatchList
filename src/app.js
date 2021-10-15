@@ -1,6 +1,19 @@
-const { Director, Movies, Shows } = require("../models");
+// const { Sequelize } = require("../node_modules/sequelize/types")
+const { Director, Movies, Shows, Genres } = require("../models");
 
-const add = async(argv) => {
+const add = async(argv, genre) => {
+    try {
+        let gen = await Genres.findOne({where: {genre: argv.genre}});
+        if (gen === null) {
+            await Genres.create({genre: argv.genre, count: 1});
+        } else {
+            await Genres.increment("count", {where: {genre}});
+            // await Genres.update({genre: genre, count: sequelize.literal("count + 1")}, {where: {genre}});
+        }
+    } catch (error) {
+        console.log(error)
+    }
+
     if (argv.add === "show") {
         let pk = await Director.findOne({where: {name: argv.director }});
         if (pk === null) {
@@ -28,7 +41,9 @@ const list = async ({list}) => {
         results = await Movies.findAll({attributes: ["id", "title", "genre", "runtime", "DirectorID"]});
     } else if (list === "shows") {
         results = await Shows.findAll({attributes: ["id", "title", "genre", "seasons", "DirectorID"]});
-    } 
+    } else if (list === "genres") {
+        results = await Genres.findAll({attributes:["genre", "count"]});
+    }
 
     console.table(results.map(result => result.dataValues))
 }
