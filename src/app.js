@@ -7,8 +7,10 @@ const add = async(argv, genre) => {
         if (gen === null) {
             await Genres.create({genre: argv.genre, count: 1});
         } else {
-            await Genres.increment("count", {where: {genre}});
+            let result = await Genres.findOne({where: {genre}})
+            await result.increment(["count"], {by: 1});
             // await Genres.update({genre: genre, count: sequelize.literal("count + 1")}, {where: {genre}});
+            //Need to run tests for the genre increment, might work now
         }
     } catch (error) {
         console.log(error)
